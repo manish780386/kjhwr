@@ -1,0 +1,17 @@
+services:
+  backend:
+    build: ./backend
+    environment:
+      - DEFAULT_CUTOFF=${DEFAULT_CUTOFF:-09:00}
+      - DEMO_MODE=${DEMO_MODE:-0}
+    volumes:
+      - ./backend/data:/app/data   # the downloaded Elexon snapshot lives here
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"

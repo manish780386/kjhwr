@@ -1,0 +1,4 @@
+# Used by Vercel for the serverless API (the app only reads the committed snapshot there).
+fastapi>=0.110
+pandas>=2.1
+numpy>=1.26
