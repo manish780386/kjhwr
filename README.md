@@ -8,7 +8,7 @@ A web app that helps a GB energy utility's day-ahead trading team answer two que
 Data comes only from Elexon (BMRS): actuals from `FUELHH` (`fuelType = WIND`) and forecasts from `WINDFOR`.
 Scope is purchase decisions taken in **January 2026** (delivery days 2 Jan to 1 Feb 2026).
 
-- Live app: **<ADD YOUR VERCEL LINK HERE>**
+- Live app: **https://kjhwr-ten.vercel.app/**
 - Stack: React (Vite, Recharts) + Python (FastAPI, pandas), Docker, deployed on Vercel.
 
 > **AI tools disclosure:** this project was built with the help of an AI assistant (Anthropic Claude) for code generation, design and documentation. The logic, assumptions and results were reviewed before submission.
@@ -27,14 +27,14 @@ Each target half-hour (`startTime`) has many forecast versions, each with a diff
 
 ### Assumptions
 
-| Topic | Assumption |
-|---|---|
+| Topic                       | Assumption                                                                                                    |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------- |
 | "Decisions in January 2026" | Decisions are taken on 1 to 31 Jan, so delivery days are 2 Jan to 1 Feb. Change in `backend/app/config.py`. |
-| Cutoff | 09:00 UK local time on D-1, configurable in the UI and via `DEFAULT_CUTOFF`. |
-| Time zone | All data is stored in UTC. Delivery day and cutoff use `Europe/London`, so BST/GMT is handled. |
-| Forecast history | Forecasts published from 18 Dec 2025 are fetched, because early-January targets are forecast ~2 weeks ahead. |
-| Units | MW per half-hour. Energy (MWh) = MW × 0.5 summed over the day. |
-| Capacity | No installed-capacity data is used (Elexon only), so percentage errors are relative to actual output. |
+| Cutoff                      | 09:00 UK local time on D-1, configurable in the UI and via `DEFAULT_CUTOFF`.                                |
+| Time zone                   | All data is stored in UTC. Delivery day and cutoff use `Europe/London`, so BST/GMT is handled.              |
+| Forecast history            | Forecasts published from 18 Dec 2025 are fetched, because early-January targets are forecast ~2 weeks ahead.  |
+| Units                       | MW per half-hour. Energy (MWh) = MW × 0.5 summed over the day.                                               |
+| Capacity                    | No installed-capacity data is used (Elexon only), so percentage errors are relative to actual output.         |
 
 ---
 
@@ -73,14 +73,14 @@ Each target half-hour (`startTime`) has many forecast versions, each with a diff
 
 ## API
 
-| Endpoint | Purpose |
-|---|---|
-| `GET /api/meta` | Data status, scope, default cutoff |
-| `GET /api/actuals?start&end` | Actual wind generation |
+| Endpoint                                                                           | Purpose                                                       |
+| ---------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| `GET /api/meta`                                                                  | Data status, scope, default cutoff                            |
+| `GET /api/actuals?start&end`                                                     | Actual wind generation                                        |
 | `GET /api/forecast/latest?start&end&mode=cutoff\|lead&cutoff=09:00&lead_hours=24` | Selected forecast joined with actuals, plus per-day summaries |
-| `GET /api/metrics?...same params` | Overall metrics, daily metrics, histogram, insights |
-| `GET /api/horizon-metrics?start&end` | Accuracy by forecast horizon |
-| `POST /api/refresh` | Re-download from Elexon (disabled on Vercel) |
+| `GET /api/metrics?...same params`                                                | Overall metrics, daily metrics, histogram, insights           |
+| `GET /api/horizon-metrics?start&end`                                             | Accuracy by forecast horizon                                  |
+| `POST /api/refresh`                                                              | Re-download from Elexon (disabled on Vercel)                  |
 
 Interactive docs: `/docs` on the backend.
 
